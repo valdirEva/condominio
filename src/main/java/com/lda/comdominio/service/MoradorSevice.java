@@ -1,16 +1,16 @@
 package com.lda.comdominio.service;
 
+import java.util.Date;
+
 import java.util.List;
 
-
-
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 
 
 import com.lda.comdominio.model.Morador;
+
 import com.lda.comdominio.repository.MoradorRepository;
 
 @Service // componente do spring para colocar nossos serviços.
@@ -18,38 +18,37 @@ public class MoradorSevice {
 	@Autowired // injeta a interface moradorRepository.
 	private MoradorRepository moradorRepository;
 
+	// Lista todos moradores
 	public List<Morador> Listar() {
 		return moradorRepository.findAll();
 	}
-	//listar moradores por numero do apartamento
-	public List<Morador> listarAp( Long numeroApartamento) {
+
+	// listar moradores por numero do apartamento
+	public List<Morador> listarAp(Long numeroApartamento) {
 		return moradorRepository.findBynumeroApartamento(numeroApartamento);
 	}
 
-	// cadastrar novo morador
-	public Morador salvarMorador(Morador morador) {
-
-		return moradorRepository.save(morador);// salva ou edita morador.
+	// adiciona morador
+	@Transactional
+	public Morador salvarMorador(String nome, String rg, Date dataNascimento, Long numeroApartamento) {
+		Morador morador = new Morador();
+		morador.setNome(nome);
+		morador.setRg(rg);
+		morador.setDataNascimento(dataNascimento);
+		morador.setNumeroApartamento(numeroApartamento);
+		moradorRepository.save(morador);
+		return morador;
 	}
-
-	// atualizar morador
-	public ResponseEntity<Morador> atualizar( Long moradorId,  Morador morador) {
-		if (!moradorRepository.existsById(moradorId)) {
-			return ResponseEntity.notFound().build();
-		}
-		morador.setId(moradorId);
-		morador = salvarMorador(morador);
-
-		return ResponseEntity.ok(morador);
+	
+	
+   // edita morador
+	public Morador atualizaMorador(Morador morador) {
+		return moradorRepository.save(morador);
 	}
 
 	// deletar morador da tabela
-	public ResponseEntity<Void> excluir( Long moradorId) {
-		if (!moradorRepository.existsById(moradorId)) {
-			return ResponseEntity.notFound().build();
-		}
+	public void excluir(long moradorId) {
 		moradorRepository.deleteById(moradorId);
-		return ResponseEntity.noContent().build();
 	}
 
 }
