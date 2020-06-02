@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.lda.comdominio.model.Morador;
 import com.lda.comdominio.model.MoradorDTO;
 import com.lda.comdominio.repository.MoradorRepository;
@@ -33,12 +34,14 @@ public class MoradorController {
 
 	// método para listar todos moradores
 	@GetMapping
+	@JsonView(View.MoradorCompleto.class)
 	public List<Morador> Listar() {
 		return moradorService.Listar();
 	}
 
 	// método para listar todos moradores de um apartamento.
 	@GetMapping("/{numeroApartamento}")
+	@JsonView(View.MoradorCompleto.class)
 	public List<Morador> listarAp(@PathVariable Long numeroApartamento) {
 		return moradorService.listarAp(numeroApartamento);
 	}
@@ -47,10 +50,14 @@ public class MoradorController {
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
 	public Morador adicionar(@RequestBody MoradorDTO morador) {
-		return moradorService.salvarMorador(morador.getNome(),morador.getRg(),morador.getDataNascimento(),morador.getNumeroApartamento());
+		return moradorService.salvarMorador(morador.getNome(),
+				morador.getRg(),
+				morador.getDataNascimento(),
+				morador.getNumeroApartamento());
 	}
 
 	// metodo para atualizar dados de morador
+	@JsonView(View.MoradorCompleto.class)
 	@PutMapping("/{moradorId}")
 	public ResponseEntity<Morador> atualizar(@PathVariable Long moradorId, @RequestBody Morador morador) {
 		if (!moradorRepository.existsById(moradorId)) {
@@ -62,7 +69,7 @@ public class MoradorController {
 		return ResponseEntity.ok(morador);
 	}
 
-	// metodo para deletar dados de morador
+	// metodo para deletar  morador
 	@DeleteMapping("/{moradorId}")
 	public ResponseEntity<Void> removeMorador(@PathVariable Long moradorId) {
 		if (!moradorRepository.existsById(moradorId)) {

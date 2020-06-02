@@ -5,9 +5,9 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 
 import com.lda.comdominio.model.Morador;
 
@@ -25,13 +25,26 @@ public class MoradorSevice {
 
 	// listar moradores por numero do apartamento
 	public List<Morador> listarAp(Long numeroApartamento) {
-		return moradorRepository.findBynumeroApartamento(numeroApartamento);
+		List <Morador> moradores = moradorRepository.findBynumeroApartamento(numeroApartamento);
+		if (moradores.size() == 0) {
+			throw new UsernameNotFoundException(
+					"Apartamento sem moradores cadastrados " );
+		}
+		
+		return moradores;
 	}
 
 	// adiciona morador
 	@Transactional
 	public Morador salvarMorador(String nome, String rg, Date dataNascimento, Long numeroApartamento) {
 		Morador morador = new Morador();
+		if (moradorRepository.findByrg(rg)!= null) {
+			Morador morador1= moradorRepository.findByrg(rg);
+			throw new UsernameNotFoundException(
+					"Morador com rg: " +
+					morador1.getRg() + 
+					" ja é cadastrado  " );
+		}
 		morador.setNome(nome);
 		morador.setRg(rg);
 		morador.setDataNascimento(dataNascimento);
@@ -39,9 +52,8 @@ public class MoradorSevice {
 		moradorRepository.save(morador);
 		return morador;
 	}
-	
-	
-   // edita morador
+
+	// edita morador
 	public Morador atualizaMorador(Morador morador) {
 		return moradorRepository.save(morador);
 	}
@@ -49,6 +61,7 @@ public class MoradorSevice {
 	// deletar morador da tabela
 	public void excluir(long moradorId) {
 		moradorRepository.deleteById(moradorId);
+
 	}
 
 }

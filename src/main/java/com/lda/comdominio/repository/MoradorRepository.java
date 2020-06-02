@@ -21,4 +21,6 @@ public interface MoradorRepository extends JpaRepository <Morador, Long>{
 		
 		
 		
+		
+		
 }
