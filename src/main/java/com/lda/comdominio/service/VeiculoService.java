@@ -28,6 +28,12 @@ public class VeiculoService {
 	
 	// Lista todos veiculos por placa
 		public Veiculo BuscaPlaca(String veiculoPlaca) {
+			if (veiculoRepository.findByPlaca(veiculoPlaca) == null) {
+				throw new UsernameNotFoundException(
+						"Veículo placa: "+
+								veiculoPlaca+
+						", não esta cadastrado.");
+			}
 			return veiculoRepository.findByPlaca(veiculoPlaca);
 		}
 

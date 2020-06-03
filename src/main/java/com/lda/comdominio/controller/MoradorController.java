@@ -45,6 +45,13 @@ public class MoradorController {
 	public List<Morador> listarAp(@PathVariable Long numeroApartamento) {
 		return moradorService.listarAp(numeroApartamento);
 	}
+	
+	// Buscar moradores por  rg
+	@GetMapping("buscarg/{rg}")
+	@JsonView(View.MoradorCompleto.class)
+	public Morador buscaRG(@PathVariable String rg) {
+			return moradorService.buscaRG(rg);
+			}
 
 	// método para adicionar dados noBD tabela morador.
 	@PostMapping

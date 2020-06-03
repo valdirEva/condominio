@@ -33,6 +33,18 @@ public class MoradorSevice {
 		
 		return moradores;
 	}
+	
+	// Buscar moradores por  rg
+		public Morador buscaRG(String rg) {
+			if (moradorRepository.findByrg(rg) == null) {
+				throw new UsernameNotFoundException(
+						"Morador com rg: "+
+								rg+
+						", não esta cadastrado.");
+			}
+			
+			return moradorRepository.findByrg(rg);
+		}
 
 	// adiciona morador
 	@Transactional
