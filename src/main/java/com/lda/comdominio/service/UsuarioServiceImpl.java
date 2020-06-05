@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lda.comdominio.exceptionhandler.NegocioException;
 import com.lda.comdominio.model.Autorizacao;
 import com.lda.comdominio.model.Usuario;
 import com.lda.comdominio.repository.AutorizacaoRepository;
@@ -27,6 +28,7 @@ public class UsuarioServiceImpl implements UsuarioService {
 			autorizacao.setNome(nomeAutorizacao);
 			autorizacaoRepo.save(autorizacao);
 		}
+		else throw new NegocioException("usuario ja possui cadastro");
 		Usuario usuario = new Usuario();
 		usuario.setNome(nome);
 		usuario.setEmail(email);

@@ -2,6 +2,8 @@ package com.lda.comdominio.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,21 +36,21 @@ public class MoradorController {
 
 	// método para listar todos moradores
 	@GetMapping
-	@JsonView(View.MoradorCompleto.class)
+	@JsonView(View.MoradorResumo.class)
 	public List<Morador> Listar() {
 		return moradorService.Listar();
 	}
 
 	// método para listar todos moradores de um apartamento.
 	@GetMapping("/{numeroApartamento}")
-	@JsonView(View.MoradorCompleto.class)
+	@JsonView(View.MoradorResumo.class)
 	public List<Morador> listarAp(@PathVariable Long numeroApartamento) {
 		return moradorService.listarAp(numeroApartamento);
 	}
 	
 	// Buscar moradores por  rg
 	@GetMapping("buscarg/{rg}")
-	@JsonView(View.MoradorCompleto.class)
+	@JsonView(View.MoradorResumo.class)
 	public Morador buscaRG(@PathVariable String rg) {
 			return moradorService.buscaRG(rg);
 			}
@@ -56,7 +58,7 @@ public class MoradorController {
 	// método para adicionar dados noBD tabela morador.
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public Morador adicionar(@RequestBody MoradorDTO morador) {
+	public Morador adicionar(@RequestBody @Valid MoradorDTO morador) {
 		return moradorService.salvarMorador(morador.getNome(),
 				morador.getRg(),
 				morador.getDataNascimento(),

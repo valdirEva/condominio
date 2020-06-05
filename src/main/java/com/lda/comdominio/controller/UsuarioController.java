@@ -1,5 +1,7 @@
 package com.lda.comdominio.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,7 +21,7 @@ public class UsuarioController {
 	private UsuarioService usuarioService;
 
 	@PostMapping(value = "/novo")
-	public Usuario cadastrarUsuario(@RequestBody UsuarioDTO usuario) {
+	public Usuario cadastrarUsuario(@RequestBody @Valid UsuarioDTO usuario) {
 		return usuarioService.novoUsuario(usuario.getNome(), usuario.getEmail(), usuario.getSenha(),
 				usuario.getAutorizacao());
 	}

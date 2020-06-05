@@ -3,10 +3,11 @@ package com.lda.comdominio.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lda.comdominio.exceptionhandler.EntidadeNaoEncontradaException;
+import com.lda.comdominio.exceptionhandler.NegocioException;
 import com.lda.comdominio.model.Morador;
 import com.lda.comdominio.model.Veiculo;
 import com.lda.comdominio.repository.MoradorRepository;
@@ -29,10 +30,7 @@ public class VeiculoService {
 	// Lista todos veiculos por placa
 		public Veiculo BuscaPlaca(String veiculoPlaca) {
 			if (veiculoRepository.findByPlaca(veiculoPlaca) == null) {
-				throw new UsernameNotFoundException(
-						"Veículo placa: "+
-								veiculoPlaca+
-						", não esta cadastrado.");
+				throw new EntidadeNaoEncontradaException("Placa não encontrada");
 			}
 			return veiculoRepository.findByPlaca(veiculoPlaca);
 		}
@@ -43,14 +41,10 @@ public class VeiculoService {
 		Morador morador = moradorRepository.findByrg(rgMorador);
 
 		if (morador == null) {
-			throw new UsernameNotFoundException("Moradorcom rg: " +
-												rgMorador +
-												" não foi encontrado");
+			throw new EntidadeNaoEncontradaException("RG não encontrado");
 		}
 		if (veiculoRepository.findByPlaca(placa) != null) {
-			throw new UsernameNotFoundException("Veículo placa:"+
-												placa
-												+ " ja cadastrado. " );
+			throw new NegocioException("Placa ja cadastrada anteriormente.");
 		}
 
 		Veiculo veiculo = new Veiculo();
@@ -66,6 +60,7 @@ public class VeiculoService {
 
 	// deletar veiculo da tabela
 	public void excluir(long veiculoId) {
+		
 		veiculoRepository.deleteById(veiculoId);
 
 	}

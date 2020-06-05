@@ -2,6 +2,8 @@ package com.lda.comdominio.controller;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,14 +34,14 @@ public class VeiculoController {
 
 	// método para listar todos veiculos
 	@GetMapping
-	@JsonView(View.MoradorResumo.class)
+	@JsonView(View.MoradorCompleto.class)
 	public List<Veiculo> Listar() {
 		return veiculoService.Listar();
 	}
 	
 	// Lista veiculos por placa
 	@GetMapping("/{veiculoPlaca}")
-	@JsonView(View.MoradorResumo.class)
+	@JsonView(View.MoradorCompleto.class)
 	public Veiculo BuscaPlaca(@PathVariable String veiculoPlaca) {
 		return veiculoService.BuscaPlaca(veiculoPlaca);
 	}
@@ -47,8 +49,8 @@ public class VeiculoController {
 	// método para adicionar dados noBD tabela veiculo.
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	@JsonView(View.MoradorResumo.class)
-	public Veiculo adicionar(@RequestBody VeiculoDTO veiculo) {
+	@JsonView(View.MoradorCompleto.class)
+	public Veiculo adicionar(@RequestBody @Valid VeiculoDTO veiculo) {
 		return veiculoService.salvarVeiculo(veiculo.getRgMorador(), veiculo.getMarca(), veiculo.getModelo(),
 				veiculo.getPlaca());
 	}

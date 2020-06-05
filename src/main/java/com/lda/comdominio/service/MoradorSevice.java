@@ -1,16 +1,15 @@
 package com.lda.comdominio.service;
 
 import java.util.Date;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.lda.comdominio.exceptionhandler.EntidadeNaoEncontradaException;
+import com.lda.comdominio.exceptionhandler.NegocioException;
 import com.lda.comdominio.model.Morador;
-
 import com.lda.comdominio.repository.MoradorRepository;
 
 @Service // componente do spring para colocar nossos serviços.
@@ -26,10 +25,7 @@ public class MoradorSevice {
 	// listar moradores por numero do apartamento
 	public List<Morador> listarAp(Long numeroApartamento) {
 		List <Morador> moradores = moradorRepository.findBynumeroApartamento(numeroApartamento);
-		if (moradores.size() == 0) {
-			throw new UsernameNotFoundException(
-					"Apartamento sem moradores cadastrados " );
-		}
+		
 		
 		return moradores;
 	}
@@ -37,10 +33,7 @@ public class MoradorSevice {
 	// Buscar moradores por  rg
 		public Morador buscaRG(String rg) {
 			if (moradorRepository.findByrg(rg) == null) {
-				throw new UsernameNotFoundException(
-						"Morador com rg: "+
-								rg+
-						", não esta cadastrado.");
+				throw new EntidadeNaoEncontradaException("RG não encontrado");
 			}
 			
 			return moradorRepository.findByrg(rg);
@@ -50,13 +43,11 @@ public class MoradorSevice {
 	@Transactional
 	public Morador salvarMorador(String nome, String rg, Date dataNascimento, Long numeroApartamento) {
 		Morador morador = new Morador();
-		if (moradorRepository.findByrg(rg)!= null) {
-			Morador morador1= moradorRepository.findByrg(rg);
-			throw new UsernameNotFoundException(
-					"Morador com rg: " +
-					morador1.getRg() + 
-					" ja é cadastrado  " );
+			if (moradorRepository.findByrg(rg)!= null) {
+			
+			throw new NegocioException("Já existe um morador cadastrado com este rg.");
 		}
+			
 		morador.setNome(nome);
 		morador.setRg(rg);
 		morador.setDataNascimento(dataNascimento);

@@ -2,11 +2,24 @@ package com.lda.comdominio.model;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+
 public class MoradorDTO {
+	@NotBlank (message = "{name.not.blank}")
 	private String nome;
+	
+	@NotBlank (message = "{rg.not.blank}")
 	private String rg;
+	
+	@NotNull (message = "{dataNascimento.not.null}")
 	private Date dataNascimento;
+	
+	@NotNull (message = "{numeroApartamento.not.null}")
 	private Long numeroApartamento;
+	
+	
 	public String getNome() {
 		return nome;
 	}

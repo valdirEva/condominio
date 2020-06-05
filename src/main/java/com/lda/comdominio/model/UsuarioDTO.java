@@ -1,9 +1,23 @@
 package com.lda.comdominio.model;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 public class UsuarioDTO {
+	
+	@NotBlank (message = "{name.not.blank}")
 	private String nome;
+	
+	@NotBlank 
+	@Email 
+	@Size(max= 255) 
 	private String email;
+	
+	@NotBlank (message = "{senha.not.blank}")
 	private String senha;
+	
+	@NotBlank (message = "{autorizacao.not.blank}")
 	private String autorizacao;
 	
 	public String getNome() {

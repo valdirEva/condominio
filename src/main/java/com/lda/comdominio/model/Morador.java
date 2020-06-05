@@ -24,28 +24,28 @@ public class Morador {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	@Column(name = "mor_id")
-	@JsonView(View.MoradorCompleto.class)
+	@JsonView(View.MoradorResumo.class)
 	private Long id;
 	
 	@Column(name = "mor_nome", length = 20, nullable = false)
-	@JsonView(View.MoradorCompleto.class)
+	@JsonView(View.MoradorResumo.class)
 	private String nome;
 	
 	@Column(name = "mor_rg ", unique = true, length = 30, nullable = false)
-	@JsonView(View.MoradorCompleto.class)
+	@JsonView(View.MoradorResumo.class)
 	private String rg;
 	
 	@Column(name = "mor_data_nascimento", nullable = false)
-	@JsonView(View.MoradorCompleto.class)
+	@JsonView(View.MoradorResumo.class)
 	private Date dataNascimento;
 	
 	@Column(name = "mor_numero_partamento", nullable = false)
-	@JsonView(View.MoradorCompleto.class)
+	@JsonView(View.MoradorResumo.class)
 	private Long numeroApartamento;
 	
 
 	@OneToMany(fetch = FetchType.LAZY, mappedBy = "morador")
-	@JsonView(View.MoradorCompleto.class)
+	@JsonView(View.MoradorResumo.class)
 	private Set<Veiculo> veiculos;
 	
 	

@@ -21,7 +21,7 @@ public class Veiculo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "vei_id")
-	@JsonView({View.MoradorCompleto.class,View.MoradorResumo.class})
+	@JsonView({View.MoradorResumo.class})
 	private Long id;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -29,15 +29,15 @@ public class Veiculo {
 	private Morador morador;
 	
 	@Column(name = "vei_marca", length = 20, nullable = false)
-	@JsonView({View.MoradorCompleto.class,View.MoradorResumo.class})
+	@JsonView({View.MoradorCompleto.class})
 	private String marca;
 	
 	@Column(name = "vei_modelo", length = 20, nullable = false)
-	@JsonView({View.MoradorCompleto.class,View.MoradorResumo.class})
+	@JsonView(View.MoradorCompleto.class)
 	private String modelo;
 	
 	@Column(name = "vei_placa", length = 20, nullable = false)
-	@JsonView({View.MoradorCompleto.class,View.MoradorResumo.class})
+	@JsonView(View.MoradorResumo.class)
 	private String placa;
 
 	

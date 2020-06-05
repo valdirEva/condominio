@@ -1,9 +1,19 @@
 package com.lda.comdominio.model;
 
+import javax.validation.constraints.NotBlank;
+
 public class VeiculoDTO {
+	
+	@NotBlank (message = "{rg.not.blank}")
 	private String rgMorador;
+	
+	@NotBlank (message = "{marca.not.blank}")
 	private String marca;
+	
+	@NotBlank (message = "{modelo.not.blank}")
 	private String modelo;
+	
+	@NotBlank (message = "{placa.not.blank}")
 	private String placa;
 	
 	
