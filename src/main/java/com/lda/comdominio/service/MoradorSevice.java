@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,11 +19,13 @@ public class MoradorSevice {
 	private MoradorRepository moradorRepository;
 
 	// Lista todos moradores
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	public List<Morador> Listar() {
 		return moradorRepository.findAll();
 	}
 
 	// listar moradores por numero do apartamento
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	public List<Morador> listarAp(Long numeroApartamento) {
 		List <Morador> moradores = moradorRepository.findBynumeroApartamento(numeroApartamento);
 		
@@ -31,6 +34,7 @@ public class MoradorSevice {
 	}
 	
 	// Buscar moradores por  rg
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 		public Morador buscaRG(String rg) {
 			if (moradorRepository.findByrg(rg) == null) {
 				throw new EntidadeNaoEncontradaException("RG não encontrado");
@@ -41,6 +45,7 @@ public class MoradorSevice {
 
 	// adiciona morador
 	@Transactional
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	public Morador salvarMorador(String nome, String rg, Date dataNascimento, Long numeroApartamento) {
 		Morador morador = new Morador();
 			if (moradorRepository.findByrg(rg)!= null) {
@@ -57,11 +62,13 @@ public class MoradorSevice {
 	}
 
 	// edita morador
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	public Morador atualizaMorador(Morador morador) {
 		return moradorRepository.save(morador);
 	}
 
 	// deletar morador da tabela
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public void excluir(long moradorId) {
 		moradorRepository.deleteById(moradorId);
 

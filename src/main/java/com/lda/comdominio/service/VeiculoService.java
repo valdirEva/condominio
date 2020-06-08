@@ -3,6 +3,7 @@ package com.lda.comdominio.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,20 +24,24 @@ public class VeiculoService {
 	private MoradorRepository moradorRepository;
 
 	// Lista todos veiculos
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	public List<Veiculo> Listar() {
 		return veiculoRepository.findAll();
 	}
 	
 	// Lista todos veiculos por placa
-		public Veiculo BuscaPlaca(String veiculoPlaca) {
-			if (veiculoRepository.findByPlaca(veiculoPlaca) == null) {
-				throw new EntidadeNaoEncontradaException("Placa não encontrada");
-			}
-			return veiculoRepository.findByPlaca(veiculoPlaca);
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+	public Veiculo BuscaPlaca(String veiculoPlaca) {
+		if (veiculoRepository.findByPlaca(veiculoPlaca) == null) {
+			throw new EntidadeNaoEncontradaException("Placa não encontrada");
 		}
+		return veiculoRepository.findByPlaca(veiculoPlaca);
+	}
 
 	// adiciona veiculo
+	
 	@Transactional
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	public Veiculo salvarVeiculo(String rgMorador, String marca, String modelo, String placa) {
 		Morador morador = moradorRepository.findByrg(rgMorador);
 
@@ -59,6 +64,7 @@ public class VeiculoService {
 	
 
 	// deletar veiculo da tabela
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN')")
 	public void excluir(long veiculoId) {
 		
 		veiculoRepository.deleteById(veiculoId);
