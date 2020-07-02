@@ -12,6 +12,8 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lda.comdominio.controller.View;
 
@@ -37,6 +39,7 @@ public class Morador {
 	
 	@Column(name = "mor_data_nascimento", nullable = false)
 	@JsonView(View.MoradorResumo.class)
+	@DateTimeFormat(pattern = "dd/MM/yyyy")
 	private Date dataNascimento;
 	
 	@Column(name = "mor_numero_partamento", nullable = false)

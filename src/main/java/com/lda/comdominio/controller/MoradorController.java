@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,6 +25,7 @@ import com.lda.comdominio.repository.MoradorRepository;
 import com.lda.comdominio.service.MoradorSevice;
 
 @RestController // anotacao para indicar ao spring que a classe é controller.
+@CrossOrigin
 @RequestMapping("/moradores") // indica onde estao todas requisições.
 public class MoradorController {
 
@@ -35,7 +37,7 @@ public class MoradorController {
 	private MoradorRepository moradorRepository;
 
 	// método para listar todos moradores
-	@GetMapping
+	@GetMapping (value = "/todos")
 	@JsonView(View.MoradorResumo.class)
 	public List<Morador> Listar() {
 		return moradorService.Listar();
@@ -56,7 +58,7 @@ public class MoradorController {
 			}
 
 	// método para adicionar dados noBD tabela morador.
-	@PostMapping
+	@PostMapping(value = "/novo")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Morador adicionar(@RequestBody @Valid MoradorDTO morador) {
 		return moradorService.salvarMorador(morador.getNome(),
@@ -67,7 +69,7 @@ public class MoradorController {
 
 	// metodo para atualizar dados de morador
 	@JsonView(View.MoradorCompleto.class)
-	@PutMapping("/{moradorId}")
+	@PutMapping("atualizar/{moradorId}")
 	public ResponseEntity<Morador> atualizar(@PathVariable Long moradorId, @RequestBody Morador morador) {
 		if (!moradorRepository.existsById(moradorId)) {
 			return ResponseEntity.notFound().build();
@@ -79,12 +81,12 @@ public class MoradorController {
 	}
 
 	// metodo para deletar  morador
-	@DeleteMapping("/{moradorId}")
-	public ResponseEntity<Void> removeMorador(@PathVariable Long moradorId) {
-		if (!moradorRepository.existsById(moradorId)) {
+	@DeleteMapping("delete/{id}")
+	public ResponseEntity<Void> removeMorador(@PathVariable Long id) {
+		if (!moradorRepository.existsById(id)) {
 			return ResponseEntity.notFound().build();
 		}
-		moradorRepository.deleteById(moradorId);
+		moradorRepository.deleteById(id);
 		return ResponseEntity.noContent().build();
 
 	}
