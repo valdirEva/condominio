@@ -5,6 +5,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.lda.comdominio.model.UsuarioDTO;
 import com.lda.comdominio.security.JwtUtils;
+import com.lda.comdominio.service.UsuarioService;
 
 
 @RestController
@@ -26,6 +28,9 @@ public class LoginController {
 
     @Autowired
     private AuthenticationManager auth;
+    @Autowired
+    private UsuarioService usu;
+    
     
     
     
@@ -41,8 +46,11 @@ public class LoginController {
                 new UsernamePasswordAuthenticationToken(
                         username, login.getSenha());
         User usuario = (User) auth.authenticate(credentials).getPrincipal();
+        UserDetails usuario2 = usu.loadUserByUsername(username);
         login.setSenha(null);
         login.setToken(JwtUtils.generateToken(usuario));
+        login.setAutorizacao(usuario2.getAuthorities().toString());
+        
         return login;
     }
     
