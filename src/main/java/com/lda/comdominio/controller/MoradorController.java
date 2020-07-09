@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lda.comdominio.model.Morador;
 import com.lda.comdominio.model.MoradorDTO;
-import com.lda.comdominio.repository.MoradorRepository;
 import com.lda.comdominio.service.MoradorSevice;
 
 @RestController // anotacao para indicar ao spring que a classe é controller.
@@ -33,9 +32,7 @@ public class MoradorController {
 	@Autowired
 	private MoradorSevice moradorService;
 
-	@Autowired // injeta a interface moradorRepository.
-	private MoradorRepository moradorRepository;
-
+	
 	// método para listar todos moradores
 	@GetMapping (value = "/todos")
 	@JsonView(View.MoradorResumo.class)
@@ -71,22 +68,15 @@ public class MoradorController {
 	@JsonView(View.MoradorCompleto.class)
 	@PutMapping("atualizar/{moradorId}")
 	public ResponseEntity<Morador> atualizar(@PathVariable Long moradorId, @RequestBody Morador morador) {
-		if (!moradorRepository.existsById(moradorId)) {
-			return ResponseEntity.notFound().build();
-		}
-		morador.setId(moradorId);
-		morador = moradorRepository.save(morador);
-
+		moradorService.atualizaMorador(morador);
 		return ResponseEntity.ok(morador);
 	}
 
 	// metodo para deletar  morador
 	@DeleteMapping("delete/{id}")
 	public ResponseEntity<Void> removeMorador(@PathVariable Long id) {
-		if (!moradorRepository.existsById(id)) {
-			return ResponseEntity.notFound().build();
-		}
-		moradorRepository.deleteById(id);
+		
+		moradorService.excluir(id);
 		return ResponseEntity.noContent().build();
 
 	}

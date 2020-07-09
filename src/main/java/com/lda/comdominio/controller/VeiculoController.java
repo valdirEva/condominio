@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.annotation.JsonView;
 import com.lda.comdominio.model.Veiculo;
 import com.lda.comdominio.model.VeiculoDTO;
-import com.lda.comdominio.repository.VeiculoRepository;
 import com.lda.comdominio.service.VeiculoService;
 
 @RestController // anotacao para indicar ao spring que a classe é controller.
@@ -31,8 +30,7 @@ public class VeiculoController {
 	@Autowired
 	private VeiculoService veiculoService;
 
-	@Autowired // injeta a interface veiculoRepository.
-	private VeiculoRepository veiculoRepository;
+	
 
 	// método para listar todos veiculos
 	@GetMapping
@@ -61,10 +59,7 @@ public class VeiculoController {
 	// metodo para deletar dados de veiculo
 	@DeleteMapping("/{veiculoId}")
 	public ResponseEntity<Void> removeVeiculo(@PathVariable Long veiculoId) {
-		if (!veiculoRepository.existsById(veiculoId)) {
-			return ResponseEntity.notFound().build();
-		}
-		veiculoRepository.deleteById(veiculoId);
+		veiculoService.excluir(veiculoId);
 		return ResponseEntity.noContent().build();
 
 	}

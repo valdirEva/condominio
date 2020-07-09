@@ -64,6 +64,7 @@ public class MoradorSevice {
 	// edita morador
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	public Morador atualizaMorador(Morador morador) {
+		
 		return moradorRepository.save(morador);
 	}
 
