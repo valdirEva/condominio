@@ -39,6 +39,13 @@ public class VeiculoController {
 		return veiculoService.Listar();
 	}
 	
+	// método para listar todos veiculos por marca ou modelo
+	@GetMapping("mm/{marcaOuModelo}")
+	@JsonView(View.MoradorCompleto.class)
+	public List<Veiculo> ListarPorMarcaOuModelo(@PathVariable String marcaOuModelo) {
+		return veiculoService.ListarPorMarcaOuModelo(marcaOuModelo,marcaOuModelo);
+	}
+	
 	// Lista veiculos por placa
 	@GetMapping("/{veiculoPlaca}")
 	@JsonView(View.MoradorCompleto.class)

@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -24,8 +25,11 @@ public class Veiculo {
 	@JsonView({View.MoradorResumo.class})
 	private Long id;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "vei_mor_id")
+	//@ManyToOne(fetch = FetchType.EAGER)
+	//@JoinColumn(name = "vei_mor_id")
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinTable(name = "mv_morador_veiculo", joinColumns = { @JoinColumn(name = "mor_id") }, inverseJoinColumns = {
+			@JoinColumn(name = "vei_id") })
 	private Morador morador;
 	
 	@Column(name = "vei_marca", length = 20, nullable = false)

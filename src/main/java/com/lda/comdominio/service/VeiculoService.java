@@ -37,6 +37,14 @@ public class VeiculoService {
 		}
 		return veiculoRepository.findByPlaca(veiculoPlaca);
 	}
+	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+	public List<Veiculo> ListarPorMarcaOuModelo(String marca,String modelo) {
+		if (veiculoRepository.findByMarcaOrModelo(marca, modelo) == null) {
+			throw new EntidadeNaoEncontradaException("Placa não encontrada");
+		}
+		return veiculoRepository.findByMarcaOrModelo(marca, modelo);
+	}
 
 	// adiciona veiculo
 	
