@@ -37,7 +37,7 @@ public class VeiculoService {
 		}
 		return veiculoRepository.findByPlaca(veiculoPlaca);
 	}
-	
+	//lista veiculos por marca ou modelo
 	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
 	public List<Veiculo> ListarPorMarcaOuModelo(String marca,String modelo) {
 		if (veiculoRepository.findByMarcaOrModelo(marca, modelo) == null) {
@@ -45,6 +45,15 @@ public class VeiculoService {
 		}
 		return veiculoRepository.findByMarcaOrModelo(marca, modelo);
 	}
+	
+	@PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_USER')")
+	public List<Veiculo> BuscaVeiculoNomeOuRg(String nome,String rg) {
+		if (veiculoRepository.findByMoradorNomeOrMoradorRg(nome, rg) == null) {
+			throw new EntidadeNaoEncontradaException("Não encontrado");
+		}
+		return veiculoRepository.findByMoradorNomeOrMoradorRg(nome, rg);
+	}
+
 
 	// adiciona veiculo
 	

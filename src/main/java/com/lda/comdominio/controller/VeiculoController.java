@@ -45,6 +45,12 @@ public class VeiculoController {
 	public List<Veiculo> ListarPorMarcaOuModelo(@PathVariable String marcaOuModelo) {
 		return veiculoService.ListarPorMarcaOuModelo(marcaOuModelo,marcaOuModelo);
 	}
+	// método para listar todos veiculos por nome ou rg do morador.
+		@GetMapping("nr/{nomeOuRg}")
+		@JsonView(View.MoradorCompleto.class)
+		public List<Veiculo> BuscaVeiculoNomeOuRg(@PathVariable String nomeOuRg) {
+			return veiculoService.BuscaVeiculoNomeOuRg(nomeOuRg,nomeOuRg);
+		}
 	
 	// Lista veiculos por placa
 	@GetMapping("/{veiculoPlaca}")

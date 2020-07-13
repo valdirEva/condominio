@@ -17,6 +17,9 @@ public interface VeiculoRepository extends JpaRepository<Veiculo, Long>{
 	Veiculo findByPlaca(String veiculoPlaca);
 	@PreAuthorize("isAuthenticated()")
 	List <Veiculo> findByMarcaOrModelo(String marca, String modelo);
+	@PreAuthorize("isAuthenticated()")
+	public List<Veiculo> findByMoradorNomeOrMoradorRg(String nome, String rg);
+	
 	
 	
 
